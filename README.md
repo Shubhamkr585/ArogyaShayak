@@ -1,15 +1,21 @@
 # ArogyaShayak 🏥
 
-**ArogyaShayak** is a comprehensive healthcare assistance platform designed to help patients navigate the healthcare system in India. It provides easy access to hospital information, government schemes, affordable accommodation, and AI-powered health assistance.
+**ArogyaShayak** is a dedicated healthcare assistance platform with a primary mission: **to raise awareness about the Ayushman Bharat scheme** and connect patients with empanelled hospitals.
+
+Our goal is to empower users by providing detailed information on:
+1.  **Ayushman Bharat Empanelled Hospitals**: Which hospitals are covered and what specific specialties/services they offer.
+2.  **Comprehensive Care Planning**: If a user chooses a hospital, we provide a complete plan including **travel costs**, **nearby affordable stays**, and **total estimated costs** for their visit.
 
 ## 🌟 Features
 
-*   **🏥 Hospital Discovery**: Find hospitals based on location, specialty, and name. Includes geo-spatial search to find the nearest facilities.
-*   **📜 Ayushman Bharat Schemes**: Explore covered treatments, check eligibility, and understand benefits under the PM-JAY scheme.
-*   **🏠 Affordable Stays**: Locate affordable accommodation options like Dharamshalas, Hostels, and Guest Houses near hospitals.
-*   **🤖 AI Health Assistant**: A smart chatbot powered by Google's Gemini API to answer health-related queries and provide guidance.
-*   **🌗 Dark Mode**: Fully responsive UI with seamless dark mode support.
-*   **🔐 User Authentication**: Secure login and registration for personalized experiences.
+*   **🏥 Smart Hospital Discovery**: Search for Ayushman Bharat empanelled hospitals by location, specialty, and name. View detailed profiles listing available services and specialties.
+*   **�️ Comprehensive Visit Planning**: Get a complete itinerary for your treatment journey, including:
+    *   **Travel Cost Estimation**: Estimated travel expenses to the hospital.
+    *   **Accommodation Finder**: Affordable stays (Dharamshalas, Hostels) near the hospital with pricing.
+    *   **Total Cost Projection**: A holistic view of potential expenses.
+*   **📜 Scheme Awareness**: Detailed catalog of Ayushman Bharat covered treatments, eligibility criteria, and benefits.
+*   **🤖 AI Health Assistant**: A smart chatbot to guide you through the scheme details and help plan your medical journey.
+*   **🌗 Dark Mode**: Accessible UI with full dark mode support.
 
 ## 🛠️ Tech Stack
 
