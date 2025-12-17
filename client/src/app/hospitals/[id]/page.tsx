@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
-import { MapPin, Phone, Globe, Star, CheckCircle, Clock } from "lucide-react";
+import { MapPin, Phone, Globe, Star, CheckCircle, Clock, Calendar } from "lucide-react";
+import CarePlanModal from "@/components/CarePlanModal";
 
 interface Hospital {
   _id: string;
@@ -13,6 +14,10 @@ interface Hospital {
     city: string;
     state: string;
     zip: string;
+  };
+  location: {
+    type: string;
+    coordinates: number[];
   };
   specialties: string[];
   rating: number;
@@ -31,6 +36,7 @@ export default function HospitalDetailPage() {
   const { id } = useParams();
   const [hospital, setHospital] = useState<Hospital | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -100,8 +106,12 @@ export default function HospitalDetailPage() {
                 </div>
               </div>
               <div className="mt-4 md:mt-0 flex gap-4">
-                <button className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                  Book Appointment
+                <button 
+                  onClick={() => setIsPlanModalOpen(true)}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+                >
+                  <Calendar className="h-4 w-4" />
+                  Plan My Visit
                 </button>
                 <button className="px-6 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition-colors">
                   Get Directions
@@ -111,15 +121,15 @@ export default function HospitalDetailPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-8">
               <div>
-                <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
+                <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Contact Info</h3>
                 <div className="space-y-3">
-                  <div className="flex items-center text-gray-600">
+                  <div className="flex items-center text-gray-600 dark:text-gray-300">
                     <Phone className="h-5 w-5 mr-3" />
                     <span>{hospital.contactNumber || "Not Available"}</span>
                   </div>
-                  <div className="flex items-center text-gray-600">
+                  <div className="flex items-center text-gray-600 dark:text-gray-300">
                     <Globe className="h-5 w-5 mr-3" />
-                    <a href={hospital.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    <a href={hospital.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
                       {hospital.website || "Not Available"}
                     </a>
                   </div>
@@ -127,17 +137,17 @@ export default function HospitalDetailPage() {
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold mb-4">Bed Availability</h3>
-                <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Bed Availability</h3>
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800">
                   <div className="flex justify-between mb-2">
-                    <span className="text-gray-600">Total Beds</span>
-                    <span className="font-semibold">{hospital.bedAvailability?.total || "N/A"}</span>
+                    <span className="text-gray-600 dark:text-gray-300">Total Beds</span>
+                    <span className="font-semibold text-gray-900 dark:text-white">{hospital.bedAvailability?.total || "N/A"}</span>
                   </div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-gray-600">Available</span>
-                    <span className="font-bold text-green-600">{hospital.bedAvailability?.available || "N/A"}</span>
+                    <span className="text-gray-600 dark:text-gray-300">Available</span>
+                    <span className="font-bold text-green-600 dark:text-green-400">{hospital.bedAvailability?.available || "N/A"}</span>
                   </div>
-                  <div className="flex items-center text-xs text-gray-500 mt-2">
+                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-2">
                     <Clock className="h-3 w-3 mr-1" />
                     <span>Last updated: {hospital.bedAvailability?.lastUpdated ? new Date(hospital.bedAvailability.lastUpdated).toLocaleDateString() : "Unknown"}</span>
                   </div>
@@ -145,10 +155,10 @@ export default function HospitalDetailPage() {
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold mb-4">Specialties</h3>
+                <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Specialties</h3>
                 <div className="flex flex-wrap gap-2">
                   {hospital.specialties.map((spec, index) => (
-                    <span key={index} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
+                    <span key={index} className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm">
                       {spec}
                     </span>
                   ))}
@@ -158,6 +168,18 @@ export default function HospitalDetailPage() {
           </div>
         </div>
       </div>
+
+      <CarePlanModal
+        isOpen={isPlanModalOpen}
+        onClose={() => setIsPlanModalOpen(false)}
+        hospitalName={hospital.name}
+        hospitalAddress={`${hospital.address.city}, ${hospital.address.state}`}
+        hospitalLocation={
+          hospital.location
+            ? { lat: hospital.location.coordinates[1], lng: hospital.location.coordinates[0] }
+            : undefined
+        }
+      />
     </div>
   );
 }

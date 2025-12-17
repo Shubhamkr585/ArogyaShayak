@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, User, LogIn } from "lucide-react";
+import { Menu, X, User, LogIn, LogOut } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
-// I'll use standard HTML button with Tailwind for now if UI component not present, but I'll try to stick to Shadcn pattern if I can.
-// Since I haven't installed Shadcn components yet, I'll use raw Tailwind.
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   return (
     <nav className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50 transition-colors duration-300">
@@ -38,17 +38,34 @@ export default function Navbar() {
             <ModeToggle />
 
             <div className="flex items-center space-x-4">
-              <Link href="/auth/login">
-                <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors">
-                  <LogIn className="w-4 h-4" />
-                  Login
-                </button>
-              </Link>
-              <Link href="/auth/signup">
-                <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors">
-                  Sign Up
-                </button>
-              </Link>
+              {user ? (
+                <div className="flex items-center gap-4">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Hi, {user.name}
+                  </span>
+                  <button 
+                    onClick={logout}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30 rounded-md transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <Link href="/auth/login">
+                    <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30 rounded-md transition-colors">
+                      <LogIn className="w-4 h-4" />
+                      Login
+                    </button>
+                  </Link>
+                  <Link href="/auth/signup">
+                    <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors">
+                      Sign Up
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 
@@ -82,17 +99,34 @@ export default function Navbar() {
               AI Assistant
             </Link>
             <div className="mt-4 flex flex-col space-y-2 px-3">
-              <Link href="/auth/login">
-                <button className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md">
-                  <LogIn className="w-4 h-4" />
-                  Login
-                </button>
-              </Link>
-              <Link href="/auth/signup">
-                <button className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md">
-                  Sign Up
-                </button>
-              </Link>
+              {user ? (
+                <>
+                  <div className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Hi, {user.name}
+                  </div>
+                  <button 
+                    onClick={logout}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30 rounded-md"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/auth/login">
+                    <button className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30 rounded-md">
+                      <LogIn className="w-4 h-4" />
+                      Login
+                    </button>
+                  </Link>
+                  <Link href="/auth/signup">
+                    <button className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md">
+                      Sign Up
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
